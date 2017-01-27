@@ -18,7 +18,7 @@ const taskController = require('./controllers/task_controller.js')
 const app = express()
 
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGOB_URI || 'mongodb://localhost/project2')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/project2')
 
 app.set('view engine', 'ejs')
 
