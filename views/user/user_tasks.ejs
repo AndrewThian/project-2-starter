@@ -107,7 +107,7 @@
   <% partyId = val._id %>
   <% }) %>
   <%= partyId %>
-  
+
   <%  if (userData.forked_challenges.length > 0) { %>
     <% userData.forked_challenges.map(function (challenge, ind) { %>
         <div class="col-lg-4 col-sm-4">
@@ -145,10 +145,6 @@
                           <%= challenge.tasks[j].completed.length %>
                           <span><%= challenge.tasks[j].description %></span>
                           <a class="glyphicon glyphicon-ok pull-right" href= <%= "/task/" + partyId +"/"+ challenge._id + "/completed/" + challenge.tasks[j]._id %> ></a>
-
-                          <%= challenge.tasks[j]._id %>
-                          <%= challenge._id %>
-                          <%= partyId %>
                         </div>
                       <% } %>
                     <% } %>
