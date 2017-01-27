@@ -1,0 +1,97 @@
+<div class="page-header">
+  <h1>
+    <%= userData.name %>'s profile
+    </br>
+  </h1>
+</div>
+
+<% var average = (userData.task_completed.length + userData.task_created.length + userData.challenge_joined.length + userData.challenge_created.length + userData.parties_joined.length + userData.parties_created.length) / 5 %>
+
+<% var c_val = average %>
+<% var m_val = 10 %>
+<% function percent (cV, mV) { %>
+  <% return (cV * 100) / mV %>
+<% } %>
+<% var value_percent = percent(c_val, m_val) %>
+<% var string1 = "width: " + value_percent + "%" %>
+<% var string2 = value_percent + "% Complete" %>
+<span>Till level up! <%= Math.floor(value_percent) %> %</span>
+<% if (value_percent < 25) { %>
+  <div class="progress">
+    <div class="progress-bar progress-bar-danger active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+      <span class="sr-only"><%= string2 %></span>
+    </div>
+  </div>
+  <span>
+  </span>
+<% } else if (value_percent > 25 && value_percent < 99 ){ %>
+  <div class="progress">
+    <div class="progress-bar progress-bar-warning active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+      <span class="sr-only"><%= string2 %></span>
+    </div>
+  </div>
+  <span>
+  </span>
+<% } else if (value_percent === 100){ %>
+  <div class="progress">
+    <div class="progress-bar progress-bar-success active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+      <span class="sr-only"><%= string2 %></span>
+    </div>
+  </div>
+<% } %>
+
+<table class = "table">
+   <caption style="font-size: 20px;">User stats</caption>
+
+   <thead>
+      <tr>
+         <th>Stats</th>
+         <th>No.</th>
+      </tr>
+   </thead>
+
+   <tbody>
+     <tr>
+       <td>Tasks competed</td>
+       <td>
+         <%= userData.task_completed.length %>
+       </td>
+     </tr>
+
+      <tr>
+         <td>Tasks created</td>
+         <td>
+           <%= userData.task_created.length %>
+         </td>
+      </tr>
+
+      <tr>
+         <td>Challenges joined</td>
+         <td>
+           <%= userData.challenge_joined.length %>
+         </td>
+      </tr>
+
+      <tr>
+         <td>Challenges created</td>
+         <td>
+           <%= userData.challenge_created.length %>
+         </td>
+      </tr>
+
+      <tr>
+         <td>Parties joined</td>
+         <td>
+           <%= userData.parties_joined.length %>
+         </td>
+      </tr>
+
+      <tr>
+         <td>Challenges created</td>
+         <td>
+           <%= userData.parties_created.length %>
+         </td>
+      </tr>
+   </tbody>
+
+</table>

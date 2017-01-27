@@ -1,0 +1,235 @@
+<div class="page-header">
+  <h1>
+    <span style="font-size: 18px;">Name:</span></br>
+    <span style="text-transform: uppercase;"><%= challengeData.name %></span>
+    </br>
+    <div style="width: 500px;">
+      <span style="font-size: 18px;">Description: <%= challengeData.description %></span></br>
+      <span style="font-size: 18px;">Created by: <%= challengeData.creator.name %></span>
+    </div>
+
+
+
+    <div class="clearfix">
+
+      <% if (partyCreator || challengeCreator) { %>
+        <form action= <%= "/challenges/" + partyData._id + "/" + challengeData._id + "?_method=DELETE" %>  method="POST">
+          <button class="btn btn-md btn-danger pull-right" type="submit">Delete</button>
+        </form>
+
+        <button type="button" class="btn btn-warning btn-md pull-right" data-toggle="modal" data-target="#editChallenge">
+          Edit
+        </button>
+      <% } %>
+
+      <% var userForked = false %>
+
+      <% for (let i = 0; i < challengeData.users_joined.length; i++) { %>
+        <% if (challengeData.users_joined[i].equals(currentUser._id)) { %>
+          <% userForked = true %>
+          <% break %>
+        <% } %>
+      <% } %>
+
+      <% if (userForked) { %>
+        <span style="font-size: 12px;">You are part of this challenge</span>
+        <% userForked = false %>
+      <% } else { %>
+        <span style="font-size: 12px;">You are not part of this challenge</span>
+        <form action= <%= "/challenges/join/" + partyData._id + "/" + challengeData._id + "?_method=PUT" %>  method="POST">
+          <button class="btn btn-md btn-success pull-right" type="submit">Join</button>
+        </form>
+      <% } %>
+
+    </div>
+  </h1>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-lg-4 col-sm-4">
+
+          <div class = "panel panel-default">
+            <div class = "panel-heading">
+              <h3 class = "panel-title">
+               Party Members
+              </h3>
+            </div>
+            <div class = "panel-body list-group">
+
+              <% partyData.participants.map(function (val, ind) { %>
+                <div class="list-group-item">
+                  <% if (ind === 0) { %>
+                    <span class="label label-success pull-right ml-5">
+                      Creator
+                    </span>
+                    <%= val.name %>
+                  <% } else { %>
+                    <%= val.name %>
+                  <% } %>
+                </div>
+              <% }) %>
+
+            </div>
+          </div>
+
+          <div class = "panel panel-default">
+            <div class = "panel-heading">
+              <h3 class = "panel-title">
+                 Party Challenges
+              </h3>
+            </div>
+            <div class = "panel-body list-group">
+
+              <% partyData.challenges.map(function (challenge, ind) { %>
+                <div class="list-group-item clearfix">
+                  <strong><div style="text-transform: uppercase"><%= challenge.name %></div></strong></br>
+                  <div class="label label-success pull-right ml-5">Creator: <%= challenge.creator.name %></div>
+                  <a class="glyphicon glyphicon-hand-up pull-left" href=
+                  <%= "/challenges/"+ partyData._id +"/"+ challenge._id %> ></a>
+                </div>
+              <% }) %>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-8 col-sm-8">
+
+          <div class = "panel panel-default">
+            <div class = "panel-heading clearfix">
+              <h3 class = "panel-title">
+                 Tasks
+              </h3>
+            </div>
+            <div class = "panel-body list-group">
+
+              <% if (partyCreator || challengeCreator) { %>
+                <form action= <%= "/task/" + challengeData._id + "/new/" + partyId %>  method="POST">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input class="form-control" type="text" name="description" placeholder="New Task..">
+                      <span class="input-group-btn">
+                      <button class="btn btn-default" type="submit">+</button>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              <% } %>
+
+              <% challengeData.tasks.map(function (task, ind) { %>
+                <div class="list-group-item clearfix">
+                  <strong>
+
+                  <span style="text-transform: uppercase"><%= task.description %></span></br>
+                  </strong>
+
+                  <% var c_val = task.completed.length %>
+                  <% var m_val = challengeData.users_joined.length %>
+                  <% function percent (cV, mV) { %>
+                    <% return (cV * 100) / mV %>
+                  <% } %>
+                  <% var value_percent = percent(c_val, m_val) %>
+                  <% var string1 = "width: " + value_percent + "%" %>
+                  <% var string2 = value_percent + "% Complete" %>
+
+                  <span><%= c_val + " users out of  " + m_val + " have completed their tasks!" %></span></br>
+                  <% if (value_percent < 25) { %>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-danger active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+                        <span class="sr-only"><%= string2 %></span>
+                      </div>
+                    </div>
+                  <% } else if (value_percent > 25 && value_percent < 99 ){ %>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-warning active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+                        <span class="sr-only"><%= string2 %></span>
+                      </div>
+                    </div>
+                  <% } else { %>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+                        <span class="sr-only"><%= string2 %></span>
+                      </div>
+                    </div>
+                    <span>SUCCESS</span>
+                  <% } %>
+
+                    <% if (task.creator == currentUser.id) { %>
+                      <button type="button" class="btn btn-warning btn-xs pull-right" data-toggle="modal" data-target= <%= "#" + task._id %>>
+                        EditTask
+                      </button>
+
+                    <% } %>
+
+                    <div class="modal fade" id="<%= task._id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h2 class="modal-title" id="myModalLabel">
+                              Edit
+                            </h2>
+                          </div>
+                          <div class="modal-body">
+
+                            <% if (currentUser._id === task.creator) { %>
+                              <form action= <%="/task/" + partyId + "/" + challengeData._id + "/" + task._id + "/edit" + "?_method=PUT" %> method="POST">
+                                <div class="form-group">
+                                  <label for="title">Description</label>
+                                  <input type="text" class="form-control" id="nameInput" placeholder="<%= task.description %>" value= "<%= task.description %>" name="description">
+                                </div>
+                                <button type="submit" class="btn btn-default">Submit</button>
+                              </form>
+                            <% } %>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                </div>
+              <% }) %>
+
+            </div>
+          </div>
+
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-xs btn-sucess pull-right" href= <%= "/party/"+ partyData._id %> >Back</a>
+
+
+
+<!-- Challenge modal -->
+<div class="modal fade" id="editChallenge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title" id="myModalLabel">
+          Edit
+        </h2>
+      </div>
+      <div class="modal-body">
+
+        <form action= <%="/challenges/edit/" + partyData._id + "/" + challengeData._id + "/" + "?_method=PUT" %> method="POST">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="nameInput" placeholder="<%= challengeData.name %>" value= "<%= challengeData.name %>" name="name">
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="descriptionInput" rows="3"  name="description"><%= challengeData.description %></textarea>
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

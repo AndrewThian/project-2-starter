@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>
+    <span style:"height: 20px;">Welcome to the Tavern!</span></br>
+    <small>
+      <div style="margin-bottom: 40px; margin-top: 15px;">Join a party so you can task together and stay accountable!</div>
+    </small>
+  </h1>
+  <a href = "/party/new" class = "btn btn-success btn-md" role = "button">
+      Create Party
+   </a>
+</div>
+
+<ul class='list-group'>
+  <% partyList.map(function (val, ind) { %>
+
+    <li class="list-group-item clearfix">
+      <strong>
+        <span style="font-size: 15px; text-transform: uppercase; margin-bottom: 10px;"><%= val.name %></span></br>
+        <hr style="margin-top: 5px; margin-bottom: 10px">
+        </strong>
+        <div style="width: 500px; margin-bottom: 20px;"><%= val.description %></div>
+        <div>
+        <div class="label label-warning pull-left ml-5" style="margin: 5px;">
+          <span>Challenges:</span>
+          <span><%= val.challenges.length %></span></br>
+        </div>
+        </div>
+        <div class="label label-success pull-left ml-5" style="margin: 5px;">
+          Creator:
+          <%= val.creator.name %>
+        </div>
+        <div class="label label-danger pull-left mr-5" style="margin: 5px;">
+          <%= val.participants.length %>
+          members
+        </div>
+      <a class= "glyphicon glyphicon-log-in pull-right" href= <%= "/party/" + val._id %> ></a>
+    </li>
+
+  <% }) %>
+
+</ul>
+
+<a class="btn btn-xs btn-sucess pull-right" href= "/user/profile" >My Profile</a>

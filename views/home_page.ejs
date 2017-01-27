@@ -1,0 +1,23 @@
+<div class="jumbotron">
+
+  <h1>AHOY YE STRANGER!</h1>
+
+  <p>I believe we haven't met, but I'm about to let you in on a secret. This might seem like an ordinary task-list but how wrong you are. I promise after you use me like a dirty tissue paper, you'll be well on your way to personal enlightenment!</p>
+
+  <p>
+
+    <% if (!currentUser) { %>
+      <a class="btn btn-primary btn-lg" href="/auth/signup" role="button">
+        Signup Fool!
+      </a>
+    <% } %>
+
+    <% if (!currentUser) { %>
+      <a class="btn btn-primary btn-lg" href="/auth/login" role="button">
+        Sign In!
+      </a>
+    <% } %>
+
+  </p>
+
+</div>

@@ -1,0 +1,74 @@
+<div class="page-header">
+  <h1>
+    <%= currentUser.name %>'s Parties
+    </br>
+  </h1>
+  <p style="
+  display: block;
+  width: 500px;
+  height: 50px;
+  margin-top: 10px;
+  vertical-align: middle;
+  line-height: 20px;
+  font-size: 15px;">
+    Head on over to your nearest tavern to quest up with a party! Or if you already have parties, good for you smarty pants. :D
+  </p>
+
+  <% var c_val = currentUser.parties.length %>
+  <% var m_val = partyAll.length %>
+  <% function percent (cV, mV) { %>
+    <% return (cV * 100) / mV %>
+  <% } %>
+  <% var value_percent = percent(c_val, m_val) %>
+  <% var string1 = "width: " + value_percent + "%" %>
+  <% var string2 = value_percent + "% Complete" %>
+  <% if (value_percent < 25) { %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+        <span class="sr-only"><%= string2 %></span>
+      </div>
+    </div>
+    <span>
+      Booooooo!
+    </span>
+  <% } else if (value_percent > 25 && value_percent < 99 ){ %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-warning active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+        <span class="sr-only"><%= string2 %></span>
+      </div>
+    </div>
+    <span>
+      Not too bad..
+    </span>
+  <% } else { %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+        <span class="sr-only"><%= string2 %></span>
+      </div>
+    </div>
+    <span>
+      Good for you!
+    </span>
+  <% } %>
+  <span>
+    You are participating in <%= value_percent + "%" %> of all parties
+  </span>
+</div>
+<% if (userData.parties.length > 0) { %>
+<ul class="list-group">
+  <% userData.parties.map(function (party, ind) { %>
+
+    <li class="list-group-item">
+      <strong><%= party.name %></strong>
+        <%= party.description %>
+        <span class="label label-success">creator<%= party.creator.name %></span>
+        <span class="label label-danger"><%= party.participants.length %>members</span>
+      <a class= "pull-right" href= <%= "/party/" + party._id %> >Enter</a>
+    </li>
+
+  <% }) %>
+</ul>
+
+<% } else { %>
+  <a class="btn btn-md btn-success pull-left" type="btn" href= "/party/list" >Tavern!</a>
+<% } %>

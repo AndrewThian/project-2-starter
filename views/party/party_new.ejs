@@ -1,0 +1,20 @@
+<div class="page-header">
+  <h1>
+    Welcome to the Tavern!</br>
+    <small>
+      Create a party and get others to eat your todo dust!
+    </small>
+  </h1>
+</div>
+
+<form action="/party/new" method="POST">
+  <div class="form-group">
+    <label for="title">Party Name</label>
+    <input type="text" class="form-control" id="nameInput" placeholder="Name" name="name">
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Write a short description" name="description"></textarea>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

@@ -1,0 +1,171 @@
+<div class="page-header">
+  <h1>
+    <%= currentUser.name %>'s Tasks
+    </br>
+  </h1>
+  <p style="
+  display: block;
+  width: 500px;
+  height: 50px;
+  margin-top: 10px;
+  vertical-align: middle;
+  line-height: 20px;
+  font-size: 15px;">
+    Grab some tasks you lazy bum, who knows you might even get to meet a ladyyyyyyyy
+  </p>
+  <% var counter = null %>
+  <% userData.forked_challenges.map(function(challenge) { %>
+    <% for (let i = 0; i < challenge.tasks.length; i++) { %>
+      <% counter++ %>
+    <% } %>
+  <% }) %>
+  <% var c_val = counter %>
+  <% var m_val = taskAll.length %>
+  <% function percent (cV, mV) { %>
+    <% return (cV * 100) / mV %>
+  <% } %>
+  <% var value_percent = percent(c_val, m_val) %>
+  <% var string1 = "width: " + value_percent + "%" %>
+  <% var string2 = value_percent + "% Complete" %>
+  <span>Task participation <%= value_percent %> %</span>
+  <% if (value_percent < 25) { %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+        <span class="sr-only"><%= string2 %></span>
+      </div>
+    </div>
+    <span>
+      Booooooo!
+    </span>
+  <% } else if (value_percent > 25 && value_percent < 75 ){ %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-warning active" role="progressbar" aria-valuenow="<% c_val %>" aria-valuemin="0" aria-valuemax="<%= m_val %>" style="<%= string1 %>" >
+        <span class="sr-only"><%= string2 %></span>
+      </div>
+    </div>
+    <span>
+      Not too bad..
+    </span>
+    <% } else if (value_percent > 76 && value_percent < 90) { %>
+      <div class="progress">
+        <div class="progress-bar progress-bar-success active" role="progressbar" aria-valuenow="<% c_value %>" aria-valuemin="0" aria-valuemax="<%= max_value %>" style="<%= string3 %>" >
+          <span class="sr-only"><%= string4 %></span>
+        </div>
+      </div>
+    <% } else if (value_percent > 90) { %>
+      <span>
+        go create more tasks!
+      </span>
+    <% } %>
+
+  <hr>
+
+  <% var c_value = userData.task_completed.length %>
+  <% var max_value = taskAll.length %>
+  <% function percent (cV, mV) { %>
+    <% return (cV * 100) / mV %>
+  <% } %>
+  <% var value_percent2 = percent(c_value, max_value) %>
+  <% var string3 = "width: " + value_percent2 + "%" %>
+  <% var string4 = value_percent2 + "% Complete" %>
+  <span>Task completion <%= Math.floor(value_percent2) %> %</span>
+  <% if (value_percent2 < 25) { %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger active" role="progressbar" aria-valuenow="<% c_value %>" aria-valuemin="0" aria-valuemax="<%= max_value %>" style="<%= string3 %>" >
+        <span class="sr-only"><%= string4 %></span>
+      </div>
+    </div>
+    <span>
+      Booooooo!
+    </span>
+  <% } else if (value_percent2 > 25 && value_percent2 < 75 ){ %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-warning active" role="progressbar" aria-valuenow="<% c_value %>" aria-valuemin="0" aria-valuemax="<%= max_value %>" style="<%= string3 %>" >
+        <span class="sr-only"><%= string4 %></span>
+      </div>
+    </div>
+    <span>
+      Not too bad..
+    </span>
+  <% } else if (value_percent2 > 76 && value_percent2 < 90) { %>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success active" role="progressbar" aria-valuenow="<% c_value %>" aria-valuemin="0" aria-valuemax="<%= max_value %>" style="<%= string3 %>" >
+        <span class="sr-only"><%= string4 %></span>
+      </div>
+    </div>
+  <% } else if (value_percent2 > 90) { %>
+    <span>
+      go grab more tasks!
+    </span>
+  <% } %>
+</div>
+
+<div class="col-md-12">
+  <div class="row">
+<% var partyId = null %>
+<% partyData.map(function(val,ind) { %>
+  <% partyId = val._id %>
+  <% }) %>
+  <%= partyId %>
+  
+  <%  if (userData.forked_challenges.length > 0) { %>
+    <% userData.forked_challenges.map(function (challenge, ind) { %>
+        <div class="col-lg-4 col-sm-4">
+          <div class = "panel panel-default">
+            <div class = "panel-heading">
+              <h3 class = "panel-title clearfix">
+                <span style="text-transform: uppercase"><%= challenge.name %></span>
+                <a class= "glyphicon glyphicon-hand-up pull-right" href= <%= "/challenges/" + partyId + "/" + challenge.id %> ></a>
+              </h3>
+            </div>
+            <div class = "panel-body list-group">
+              <% if (challenge.tasks.length <= 0) { %>
+                <div class="list-group-item">
+                  <span>no tasks yet!</span>
+                </div>
+              <% } else { %>
+                <% for (let j = 0; j < challenge.tasks.length; j++) { %>
+                  <% var userCompleted = false %>
+                    <% for (let k = 0; k < challenge.tasks[j].completed.length; k++) { %>
+                      <% if (challenge.tasks[j].completed[k].equals(currentUser.id)) { %>
+                        <% userCompleted = true %>
+                            <% break %>
+                          <% } %>
+                        <% } %>
+                      <% if (userCompleted) { %>
+                        <div class="list-group-item">
+                          <%= challenge.tasks[j].completed.length %>
+                          task completed! </br>
+                          <span><%= challenge.tasks[j].description %></span>
+                          <% userCompleted = false %>
+                        </div>
+                      <% } else {%>
+                        <div class="list-group-item">
+                          task incomplete! </br>
+                          <%= challenge.tasks[j].completed.length %>
+                          <span><%= challenge.tasks[j].description %></span>
+                          <a class="glyphicon glyphicon-ok pull-right" href= <%= "/task/" + partyId +"/"+ challenge._id + "/completed/" + challenge.tasks[j]._id %> ></a>
+
+                          <%= challenge.tasks[j]._id %>
+                          <%= challenge._id %>
+                          <%= partyId %>
+                        </div>
+                      <% } %>
+                    <% } %>
+                  <% } %>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+
+
+    <% }) %>
+    <% } else { %>
+      <a class="btn btn-md btn-success pull-left" type="btn" href= "/party/list" >Tavern!</a>
+      <% } %>
+
+    </div>
+  </div>
