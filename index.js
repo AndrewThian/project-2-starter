@@ -18,7 +18,7 @@ const taskController = require('./controllers/task_controller.js')
 const app = express()
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/project2')
+mongoose.connect(process.env.MONGOB_URI ||'mongodb://localhost/project2')
 
 app.set('view engine', 'ejs')
 
@@ -109,6 +109,6 @@ app.use('/task', taskController)
 // ============ server port & error handling =========== //
 // ===================================================== //
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('listening')
 })
